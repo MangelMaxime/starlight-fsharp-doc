@@ -1,0 +1,58 @@
+.fsharp-doc-kw { color: var(--fsharp-doc-kw); }
+.fsharp-doc-fn { color: var(--fsharp-doc-fn); }
+.fsharp-doc-type { color: var(--fsharp-doc-type); }
+.fsharp-doc-typevar { color: var(--fsharp-doc-typevar); }
+.fsharp-doc-property { color: #0a86ff }
+
+.fsharp-doc-sig {
+    font-family: var(--sl-font-mono, monospace);
+    font-size: var(--sl-text-code, 0.875em);
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    display: block;
+
+    > div {
+        margin-top: unset;
+    }
+
+    a {
+        color: unset;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+}
+
+
+.fs-parameter__signature {
+    margin-left: 0.75rem;
+}
+
+.fs-parameter__documentation {
+    margin-left: 1.5rem;
+    margin-top: 0;
+}
+
+.fsharp-doc-indent {
+    display: inline;
+    white-space: pre;
+}
+
+.fsharp-doc-obsolete-inline {
+    background-color: var(--sl-color-orange-low);
+    color: var(--sl-color-orange-high);
+    font-size: 0.75em;
+    padding: 0.15em 0.5em;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-left: 0.5em;
+}
+
+.fsharp-doc-attr {
+    color: var(--sl-color-gray-3);
+    font-size: var(--sl-text-sm);
+    display: block;
+    margin-bottom: 0.25rem;
+}

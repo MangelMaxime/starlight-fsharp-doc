@@ -1,0 +1,4 @@
+bin/
+obj/
+oracle-bin/
+node_modules/

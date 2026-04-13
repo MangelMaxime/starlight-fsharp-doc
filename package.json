@@ -1,0 +1,34 @@
+{
+  "name": "starlight-fsharp-oracle",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./packages/Starlight.FSharp.Oracle/Plugin.fs.js",
+    "./components/DocEntry.astro": "./packages/Starlight.FSharp.Oracle/components/DocEntry.astro",
+    "./components/FSharpDocPage.astro": "./packages/Starlight.FSharp.Oracle/components/FSharpDocPage.astro",
+    "./layouts/FSharpDocLayout.astro": "./packages/Starlight.FSharp.Oracle/layouts/FSharpDocLayout.astro"
+  },
+  "files": [
+    "packages/FSharp.Oracle/**/*.fs",
+    "!packages/FSharp.Oracle/obj",
+    "packages/FSharp.Oracle/*.fsproj",
+    "packages/FSharp.Oracle.Schema/**/*.fs",
+    "!packages/FSharp.Oracle.Schema/obj",
+    "packages/FSharp.Oracle.Schema/*.fsproj",
+    "Directory.Build.props",
+    "Directory.Packages.props"
+  ],
+  "scripts": {
+    "postinstall": "dotnet publish packages/FSharp.Oracle/FSharp.Oracle.fsproj -c Release --nologo -o packages/Starlight.FSharp.Oracle/oracle-bin"
+  },
+  "peerDependencies": {
+    "@astrojs/starlight": ">= 0.38.0",
+    "astro-expressive-code": ">= 0.38.0"
+  },
+  "devDependencies": {
+    "@hideoo/tsconfig": "^2.0.3",
+    "@types/node": "^25.6.0",
+    "astro-expressive-code": "^0.41.7",
+    "typescript": "^5.8.0"
+  }
+}
