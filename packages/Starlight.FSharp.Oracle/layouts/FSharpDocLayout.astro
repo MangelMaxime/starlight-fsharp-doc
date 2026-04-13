@@ -1,0 +1,27 @@
+---
+// Layout adapter for generated .mdx pages.
+// Bridges the markdown layout prop shape ({ frontmatter, headings }) to
+// FSharpDocPage which expects ({ title, headings }).
+// @ts-ignore
+import FSharpDocPage from '../components/FSharpDocPage.astro';
+
+interface TocEntry {
+    depth: number;
+    slug: string;
+    text: string;
+}
+
+interface Props {
+    frontmatter: {
+        title: string;
+        headings: TocEntry[];
+    };
+}
+
+
+const { frontmatter } = Astro.props;
+---
+
+<FSharpDocPage title={frontmatter.title} headings={frontmatter.headings ?? []}>
+    <slot />
+</FSharpDocPage>

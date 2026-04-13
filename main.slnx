@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/build/">
+    <Project Path="build/EasyBuild.fsproj" />
+  </Folder>
+  <Folder Name="/packages/">
+    <Project Path="packages/FSharp.Oracle/FSharp.Oracle.fsproj" />
+    <Project Path="packages/FSharp.Oracle.Schema/FSharp.Oracle.Schema.fsproj" />
+    <Project Path="packages/Starlight.FSharp.Oracle/Starlight.FSharp.Oracle.fsproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Reference/Reference.fsproj" />
+  </Folder>
+</Solution>

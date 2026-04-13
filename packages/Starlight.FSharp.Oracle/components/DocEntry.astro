@@ -1,0 +1,256 @@
+---
+import { Aside } from "@astrojs/starlight/components";
+
+interface Props {
+    open?: boolean;
+    name: string;
+    obsolete?: boolean;
+    obsoleteMessage?: string;
+}
+
+const { open = false, name, obsolete = false, obsoleteMessage } = Astro.props;
+---
+
+<div class="collapsible" data-open={open}>
+    <div
+        class="collapsible__trigger"
+        aria-expanded={open ? "true" : "false"}
+        role="button"
+    >
+        <h2 id={name} class="sr-only">{name}</h2>
+        <span class="not-content">
+            <slot name="signature" />
+        </span>
+        {obsolete && <span class="deprecated-badge">Deprecated</span>}
+        <div class="collapsible__icon">
+            <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z"
+                    fill="currentColor"></path>
+            </svg>
+        </div>
+        <a
+            href={`#${name}`}
+            class="collapsible__anchor-link"
+            aria-label={`Permalink to ${name}`}
+            title={`Permalink to ${name}`}
+            tabindex="-1"
+        >
+            <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    d="M14.8284 12L16.2426 13.4142L19.071 10.5858C20.6331 9.02365 20.6331 6.49099 19.071 4.9289C17.509 3.3668 14.9763 3.3668 13.4142 4.9289L10.5858 7.75732L12 9.17154L14.8284 6.34311C15.6095 5.56206 16.8758 5.56206 17.6568 6.34311C18.4379 7.12416 18.4379 8.39049 17.6568 9.17154L14.8284 12Z"
+                    fill="currentColor"></path>
+                <path
+                    d="M12 14.8285L13.4142 16.2427L10.5858 19.0711C9.02372 20.6332 6.49106 20.6332 4.92896 19.0711C3.36686 17.509 3.36686 14.9764 4.92896 13.4143L7.75739 10.5858L9.1716 12L6.34317 14.8285C5.56212 15.6095 5.56212 16.8758 6.34317 17.6569C7.12422 18.4379 8.39055 18.4379 9.1716 17.6569L12 14.8285Z"
+                    fill="currentColor"></path>
+                <path
+                    d="M14.8285 10.5857C15.219 10.1952 15.219 9.56199 14.8285 9.17147C14.4379 8.78094 13.8048 8.78094 13.4142 9.17147L9.1716 13.4141C8.78107 13.8046 8.78107 14.4378 9.1716 14.8283C9.56212 15.2188 10.1953 15.2188 10.5858 14.8283L14.8285 10.5857Z"
+                    fill="currentColor"></path>
+            </svg>
+        </a>
+    </div>
+    <div class="collapsible__content" role="region" hidden={!open}>
+        {
+            obsolete && (
+                <Aside type="caution" title="Deprecated">
+                    {obsoleteMessage}
+                </Aside>
+            )
+        }
+        <slot />
+    </div>
+</div>
+
+<style>
+    .collapsible {
+        --fo-collapsible-border-raduis: 6px;
+        /*
+            Trying to use Starlight colors for better integration
+            If needed, we can revisit this and add specific colors for the collapsible component
+        */
+        --fo-collapsible-primary-color: var(--sl-color-gray-6);
+        --fo-collapsible-secondary-color: var(--sl-color-gray-7);
+    }
+
+    :global([data-theme="dark"]) .collapsible {
+        --fo-collapsible-primary-color: var(--sl-color-gray-5);
+        --fo-collapsible-secondary-color: var(--sl-color-gray-6);
+    }
+
+    .collapsible__trigger {
+        width: 100%;
+        background-color: transparent;
+        padding: 1rem;
+        cursor: pointer;
+        text-align: left;
+        transition: background 0.15s;
+        position: relative;
+        border-radius: var(--fo-collapsible-border-raduis);
+    }
+
+    .collapsible__trigger:hover {
+        background: var(--fo-collapsible-secondary-color);
+    }
+
+    .collapsible__icon {
+        transition: transform 0.2s ease;
+        position: absolute;
+        left: -1.5rem;
+        top: 1rem;
+        display: flex;
+    }
+
+    .collapsible__anchor-link {
+        position: absolute;
+        left: -3rem;
+        top: 1rem;
+        text-decoration: none;
+        color: var(--sl-color-gray-3);
+        opacity: 0;
+        /* delayed fade-out: wait 400ms before fading over 200ms */
+        transition: opacity 0.2s 0.4s;
+    }
+
+    .collapsible:hover .collapsible__anchor-link {
+        opacity: 0.75;
+        /* fast fade-in on hover, no delay */
+        transition: opacity 0.15s;
+    }
+
+    @keyframes collapsible-flash {
+        50% {
+            background-color: var(--sl-color-accent-low);
+        }
+    }
+
+    .collapsible__trigger[data-flash] {
+        animation: collapsible-flash 0.75s ease;
+        animation-iteration-count: 2;
+    }
+
+    .collapsible[data-open="true"] .collapsible__trigger {
+        border-radius: var(--fo-collapsible-border-raduis)
+            var(--fo-collapsible-border-raduis) 0 0;
+        background-color: var(--fo-collapsible-primary-color);
+    }
+
+    .collapsible[data-open="true"] .collapsible__icon {
+        transform: rotate(90deg);
+    }
+
+    .collapsible__content {
+        margin-top: 0.5rem;
+        padding: 1rem;
+        background-color: var(--fo-collapsible-secondary-color);
+        border-radius: 0 0 var(--fo-collapsible-border-raduis)
+            var(--fo-collapsible-border-raduis);
+    }
+
+    .collapsible__content[hidden] {
+        display: none;
+    }
+
+    .deprecated-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background-color: var(--sl-color-orange-low);
+        color: var(--sl-color-orange-high);
+        font-size: 0.75em;
+        padding: 0.15em 0.5em;
+        border-radius: 4px;
+        font-weight: 600;
+    }
+
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+    }
+</style>
+
+<script>
+    const toggleCollapsible = (el: HTMLElement, isOpen: boolean) => {
+        const trigger = el.querySelector(".collapsible__trigger")!;
+        const content = el.querySelector<HTMLElement>(".collapsible__content")!;
+        const newState = String(!isOpen);
+        el.classList.toggle("is-open", !isOpen);
+        el.dataset["open"] = newState;
+        trigger.setAttribute("aria-expanded", newState);
+        content.hidden = isOpen;
+    };
+
+    document.querySelectorAll<HTMLElement>(".collapsible").forEach((el) => {
+        const trigger = el.querySelector<HTMLElement>(".collapsible__trigger")!;
+
+        trigger.addEventListener("click", (e) => {
+            // Don't toggle when clicking the anchor link
+            if ((e.target as HTMLElement).closest(".collapsible__anchor-link"))
+                return;
+            const isOpen = el.dataset["open"] === "true";
+            toggleCollapsible(el, isOpen);
+        });
+    });
+
+    function flashTrigger(collapsible: HTMLElement) {
+        const trigger = collapsible.querySelector<HTMLElement>(
+            ".collapsible__trigger",
+        )!;
+        trigger.removeAttribute("data-flash");
+        void trigger.offsetWidth; // force reflow to restart animation
+        trigger.setAttribute("data-flash", "");
+        trigger.addEventListener(
+            "animationend",
+            () => trigger.removeAttribute("data-flash"),
+            { once: true },
+        );
+    }
+
+    function openCollapsibleForHash(hash: string) {
+        if (!hash) return;
+        const target = document.getElementById(hash);
+        if (!target) return;
+        const collapsible = target.closest<HTMLElement>(".collapsible");
+        if (!collapsible) return;
+        if (collapsible.dataset["open"] !== "true") {
+            toggleCollapsible(collapsible, false);
+        }
+        collapsible.scrollIntoView({ behavior: "instant", block: "start" });
+        flashTrigger(collapsible);
+    }
+
+    openCollapsibleForHash(window.location.hash.slice(1));
+
+    let ignoreNextHashChange = false;
+
+    document
+        .querySelectorAll<HTMLElement>(".collapsible__anchor-link")
+        .forEach((link) => {
+            link.addEventListener("click", () => {
+                ignoreNextHashChange = true;
+            });
+        });
+
+    window.addEventListener("hashchange", () => {
+        if (ignoreNextHashChange) {
+            ignoreNextHashChange = false;
+            return;
+        }
+        openCollapsibleForHash(window.location.hash.slice(1));
+    });
+</script>

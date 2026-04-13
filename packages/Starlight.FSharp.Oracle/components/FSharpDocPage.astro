@@ -1,0 +1,121 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+// @ts-ignore
+import "./fsharp-doc.css";
+
+interface TocEntry {
+    depth: number;
+    slug: string;
+    text: string;
+}
+
+interface Props {
+    title: string;
+    headings: TocEntry[];
+}
+
+const { title, headings } = Astro.props;
+---
+
+<StarlightPage frontmatter={{ title }} headings={headings}>
+    <slot />
+</StarlightPage>
+
+<script>
+    declare global {
+        interface Window {
+            __fsharpSidebarLabel?: string;
+        }
+    }
+
+    /**
+     * Create a button that expands or collapses all details elements within a given sidebar section.
+     * @param label The button label
+     * @param sidebarTarget The details element that is the root of the sidebar section to control
+     * @param stateOnClick The state to set on the details elements when the button is clicked
+     */
+    const expansionButton = (
+        label: string,
+        sidebarTarget: HTMLDetailsElement,
+        stateOnClick: boolean,
+    ) => {
+        const btn = document.createElement("button");
+        btn.className = "fsharp-collapse-btn";
+        btn.textContent = label;
+        btn.addEventListener("click", () => {
+            sidebarTarget!
+                .querySelectorAll<HTMLDetailsElement>("details")
+                .forEach((d) => {
+                    d.open = stateOnClick;
+                });
+        });
+        return btn;
+    };
+
+    /**
+     * Register "Collapse all" and "Expand all" buttons in the sidebar section
+     * matching the label in `window.__fsharpSidebarLabel`.
+     *
+     * We register the buttons by injection at runtime, rather than overriding the Astro components
+     * to avoid conflicts in case the user already overrides the sidebar component
+     */
+    function initFSharpSidebarControls(): void {
+        const label = window.__fsharpSidebarLabel;
+        if (!label) return;
+
+        let target: HTMLDetailsElement | null = null;
+        for (const d of document.querySelectorAll<HTMLDetailsElement>(
+            ".sidebar-content details",
+        )) {
+            const summary = d.querySelector(":scope > summary");
+            if (summary?.textContent?.trim() === label) {
+                target = d;
+                break;
+            }
+        }
+
+        if (!target || target.querySelector(".fsharp-sidebar-controls")) return;
+
+        const ul = target.querySelector<HTMLUListElement>(":scope > ul");
+        if (!ul) return;
+
+        const wrap = document.createElement("div");
+        wrap.className = "fsharp-sidebar-controls";
+
+        const collapseButton = expansionButton("Collapse all", target, false);
+        const expandButton = expansionButton("Expand all", target, true);
+
+        wrap.appendChild(collapseButton);
+        wrap.appendChild(expandButton);
+        target.insertBefore(wrap, ul);
+    }
+
+    // Module scripts run after the DOM is parsed, so init can run immediately.
+    // astro:page-load handles subsequent client-side navigations.
+    initFSharpSidebarControls();
+    document.addEventListener("astro:page-load", initFSharpSidebarControls);
+</script>
+
+<style>
+    :global(.fsharp-sidebar-controls) {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.125rem var(--sl-sidebar-item-padding-inline, 0.5rem) 0.375rem;
+    }
+
+    :global(.fsharp-collapse-btn) {
+        font-size: var(--sl-text-xs, 0.75rem);
+        color: var(--sl-color-gray-3);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        font-family: inherit;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+
+    :global(.fsharp-collapse-btn):hover {
+        color: var(--sl-color-text);
+    }
+</style>

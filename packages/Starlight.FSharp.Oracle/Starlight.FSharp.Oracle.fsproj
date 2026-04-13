@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Extensions/StringBuilder.fs" />
+    <Compile Include="Extensions/TextNode.fs" />
+    <Compile Include="Helpers.fs" />
+    <Compile Include="Themes.fs" />
+    <Compile Include="Render/Types.fs" />
+    <Compile Include="Render/Primitives.fs" />
+    <Compile Include="Render/Documentation.fs" />
+    <Compile Include="Render/Entries.fs" />
+    <Compile Include="Render/Pages.fs" />
+    <Compile Include="Render.fs" />
+    <Compile Include="Generate.fs" />
+    <Compile Include="Plugin.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FSharp.Oracle.Schema\FSharp.Oracle.Schema.fsproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fable.Core" />
+    <PackageReference Include="Fable.Node" />
+    <PackageReference Include="Fable.Promise" />
+    <PackageReference Include="Thoth.Json.Core.Auto" />
+    <PackageReference Include="Thoth.Json.JavaScript" />
+  </ItemGroup>
+
+</Project>
