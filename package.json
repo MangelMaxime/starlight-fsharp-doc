@@ -22,7 +22,8 @@
     "Directory.Packages.props"
   ],
   "scripts": {
-    "postinstall": "dotnet publish packages/FSharp.Oracle/FSharp.Oracle.fsproj -c Release --nologo -o oracle-bin"
+    "postinstall": "dotnet publish packages/FSharp.Oracle/FSharp.Oracle.fsproj -c Release --nologo -o oracle-bin",
+    "prepack": "dotnet fable packages/Starlight.FSharp.Oracle/ --outDir dist --noCache && rm dist/fable_modules/.gitignore"
   },
   "peerDependencies": {
     "@astrojs/starlight": ">= 0.38.0",
