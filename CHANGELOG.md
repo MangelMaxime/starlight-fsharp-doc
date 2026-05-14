@@ -1,5 +1,5 @@
 ---
-last_commit_released: f8a4ff5673ff7b2386988c021bce6ddafd75349c
+last_commit_released: f566ab34e39f9ea2fbeb2aeddda2428d5d27dfb0
 name: starlight-fsharp-oracle
 updaters:
   - package.json:
@@ -15,6 +15,15 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 This changelog is generated using [EasyBuild.ShipIt](https://github.com/easybuild-org/EasyBuild.ShipIt).
 
 ⚠ Only edit the front matter metadata at the top of this file. All other changes will be overwritten when a new release is created.
+
+## 0.1.1 - 2026-05-14
+
+### 🐞 Bug Fixes
+
+* Don't include oracle-bin ([c3a5412](https://github.com/MangelMaxime/starlight-fsharp-doc/commit/c3a5412c53b2e249d2230f95d486187ab5c4792a))
+* Include fable_modules files ([f566ab3](https://github.com/MangelMaxime/starlight-fsharp-doc/commit/f566ab34e39f9ea2fbeb2aeddda2428d5d27dfb0))
+
+<strong><small>[View changes on Github](https://github.com/MangelMaxime/starlight-fsharp-doc/compare/f8a4ff5673ff7b2386988c021bce6ddafd75349c..f566ab34e39f9ea2fbeb2aeddda2428d5d27dfb0)</small></strong>
 
 ## 0.1.0 - 2026-05-14
 
