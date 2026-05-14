@@ -10,7 +10,6 @@
   },
   "files": [
     "dist/**/*",
-    "oracle-bin/",
     "packages/FSharp.Oracle/**/*.fs",
     "!packages/FSharp.Oracle/obj",
     "packages/FSharp.Oracle/*.fsproj",
